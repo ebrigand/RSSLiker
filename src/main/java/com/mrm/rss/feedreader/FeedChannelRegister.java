@@ -29,6 +29,7 @@ public class FeedChannelRegister {
 
   @PostConstruct
   public void afterPropertiesSet() throws Exception {
+    feedChannel.setShouldTrack(true);
     feedChannel.setInterceptors(Arrays.asList(feedChannelInterceptor));
     feedChannel.subscribe(feedMessageHandler);
   }

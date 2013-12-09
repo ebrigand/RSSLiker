@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.mrm.rss.properties.RssLikerProperties;
 import com.mrm.rss.xml.model.Repo;
 
 /**
@@ -19,8 +20,8 @@ import com.mrm.rss.xml.model.Repo;
 @Service
 public class XMLRepoManager {
 
-  // TODO parameterize the file name and file path in a property
-  private static String REPO_ABSOLUTE_FILE_PATH = "repo.xml";
+  @Resource
+  private RssLikerProperties rssLikerProperties;
 
   @Resource(name = "xmlRepoConverter")
   private XMLRepoConverter xmlConverter;
@@ -33,7 +34,7 @@ public class XMLRepoManager {
    */
   @PostConstruct
   private void initialize() throws IOException {
-    File repo = new File(REPO_ABSOLUTE_FILE_PATH);
+    File repo = new File(rssLikerProperties.getXmlFileRepository());
     if (!repo.exists()) {
       repo.createNewFile();
     }
@@ -47,7 +48,7 @@ public class XMLRepoManager {
    *           if an exception occurs when accessing the file
    */
   public Repo openRepo() throws IOException {
-    Repo repo = xmlConverter.convertFromXMLToRepo(REPO_ABSOLUTE_FILE_PATH);
+    Repo repo = xmlConverter.convertFromXMLToRepo(rssLikerProperties.getXmlFileRepository());
     return repo;
   }
 
@@ -59,6 +60,6 @@ public class XMLRepoManager {
    *           if an exception occurs when accessing / saving the file
    */
   public synchronized void saveRepo(Repo repo) throws IOException {
-    xmlConverter.convertFromRepoToXML(repo, REPO_ABSOLUTE_FILE_PATH);
+    xmlConverter.convertFromRepoToXML(repo, rssLikerProperties.getXmlFileRepository());
   }
 }

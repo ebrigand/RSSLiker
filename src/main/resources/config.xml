@@ -25,7 +25,7 @@
 
   <!--   feed inbound channel adapter  -->
   <int-feed:inbound-channel-adapter id="feedAdapter" channel="feedChannel" url="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss.xml">
-    <int:poller fixed-rate="300000" max-messages-per-poll="100" />
+    <int:poller fixed-rate="100000" max-messages-per-poll="100" />
   </int-feed:inbound-channel-adapter>
 
   <!--   Initialize the service  -->

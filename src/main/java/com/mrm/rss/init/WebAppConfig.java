@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.accept.ContentNegotiationManager;
@@ -31,8 +33,9 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
  */
 @Configuration
 @EnableWebMvc
+@ImportResource("classpath*:config.xml")
 @ComponentScan("com.mrm.rss")
-@ImportResource("config.xml")
+@PropertySource("classpath:rssliker.properties")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
   @Resource
@@ -42,6 +45,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
   public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
     configurer.favorPathExtension(true).useJaf(false).ignoreAcceptHeader(true).mediaType("html", MediaType.TEXT_HTML).mediaType("json", MediaType.APPLICATION_JSON)
         .defaultContentType(MediaType.TEXT_HTML);
+  }
+
+  @Bean
+  public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+    return new PropertySourcesPlaceholderConfigurer();
   }
 
   @Bean
