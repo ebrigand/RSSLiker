@@ -27,6 +27,7 @@
       	//Change the like value (inverse the value)
       	var isNewLikeValue = (isLikeElt.value == "true") ? false : true;
       	var likeCountElt = $(this).prop('likeCount');
+      	var likeStrElt = $(this).prop('likeStr');
           //Create the JSON of HomeBeanView
       	var json = { "likeCount" : likeCountElt.value, like : {"accountName" : accountNameValue, "uriWithoutSpecialChars" : uriWithoutSpecialCharsValue, "isLike": isNewLikeValue }};
           $.ajax({
@@ -39,15 +40,20 @@
             },
             success: function(homeBeanView) {
           	  //Change the value of the submit button (if the button was 'Like' it becomes 'UnLike' and the opposite)
-                if(homeBeanView.like.isLike){
-              	  buttonElt.value = "UnLike";
-                }else{
-              	  buttonElt.value = "Like"; 
-                }
+              if(homeBeanView.like.isLike){
+                buttonElt.value = "UnLike";
+              } else {
+                buttonElt.value = "Like"; 
+              }
           	  //Change the value of the input hidden value with id 'isLike', update with the new value (coming from the ajax response)
-                isLikeElt.value = homeBeanView.like.isLike;
-                //Change the value of the input text value with id 'likeCount', update with the new value (coming from the ajax response)
+              isLikeElt.value = homeBeanView.like.isLike;
+              //Change the value of the input text value with id 'likeCount', update with the new value (coming from the ajax response)
           	  likeCountElt.value = homeBeanView.likeCount;
+          	  if(likeCountElt.value == 0){
+          		likeStrElt.value = "like"; 
+          	  } else {
+          		likeStrElt.value = "likes"; 
+              }
             }
           
         });
@@ -79,7 +85,7 @@
                     <input type="hidden" id="uriWithoutSpecialChars" name="uriWithoutSpecialChars" type="text" value="${homeBeanView.like.uriWithoutSpecialChars}"/>
                     <input type="hidden" id="isLike" name="isLike" type="text" value="${homeBeanView.like.isLike}"/>
                     <input id="likeButton" style="width: 80px" type="submit" value="${homeBeanView.like.isLike ? 'UnLike' : 'Like'}" />
-                    <img src="img/spacer.gif" alt=" " width="20" height="1" /><input type="text" style="border: none; width: 10px" readonly="readonly" id="likeCount" value="${homeBeanView.likeCount}" /> likes
+                    <img src="img/spacer.gif" alt=" " width="20" height="1" /><input type="text" style="border: none; width: 10px" readonly="readonly" id="likeCount" value="${homeBeanView.likeCount}" /> <input type="text" style="border: none; width: 30px" readonly="readonly" id="likeStr" value="${homeBeanView.likeCount == 0 ? 'like' : 'likes'}" />
                 </form>
               </td>
             </tr>
