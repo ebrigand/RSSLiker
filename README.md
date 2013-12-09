@@ -18,25 +18,32 @@ Store this data as an XML file on your site.
 =========================================================================================================================================================
 Project Details:
 
-The url is define in the config.xml file
+The RSS url of the BBC is defined in the config.xml file.
 
-The web app load the rss url after the start of the application
-Spring integration (look the config.xml) helps to read and parse the rss url (each element is parsed into SyndEntry object) and look if new elements of the rss url are published, 
-the time between each look is define with the fixed-rate property
+Sometimes the server having trouble accessing the RSS url (if for example the BBC server hosting the url doesn't reply),
+ so no feeds are display in the home page, try it again later...
 
-An interceptor is define, it helps to store each syndEntry element read of the rss url in a static list of syndEntry element. 
+How it works:
+The web app load the RSS url after the start of the application. Spring integration (look the config.xml) helps to read and parse the RSS url, 
+each element is parsed and saved into SyndEntry object (ROME API), and a check and retrieve happens if some new elements of the RSS url are published. 
+The time between each checking and retrieving is defined with the "fixed-rate" property
+
+An interceptor is defined, it helps to store each syndEntry element read of the RSS url in a static list of syndEntry element. 
 
 The account representation is just done with a String attribute passed to the home url (accountName)
 
-A like is define by an account and a syndEntry
+A like is defined by an account and a syndEntry
 
-A total count of like is define by all the likes (of all account) for a same syndEntry
+A total count of like is defined by all the likes (of all account) for a same syndEntry
 
 To access at the home page: (ebrigand is an example for an accountName)
 http://localhost:8080/rss/home?accountName=ebrigand
 
+The like action and like count are saved in a xml file (the file name is defined in a properties file)
+
 Technologies used:
 - Spring MVC with RESTful JSON based services
-- Spring integration
+- Spring integration and Spring integration feed
 - Spring OXM
 - JQuery front-end (with JSON AJAX requests)
+- API ROME
