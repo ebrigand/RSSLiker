@@ -47,3 +47,10 @@ Technologies used:
 - Spring OXM
 - JQuery front-end (with JSON AJAX requests)
 - API ROME
+
+=========================================================================================================================================================
+
+Improvement
+
+A long polling or a similar technique could be used for the like counter.
+So if a second user like a story, the first one will have the new value of the counter without refresh the page.

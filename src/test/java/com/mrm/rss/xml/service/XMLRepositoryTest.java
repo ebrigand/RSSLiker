@@ -16,6 +16,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.mrm.rss.init.WebAppConfig;
 import com.mrm.rss.xml.model.Like;
+import com.mrm.rss.xml.model.Story;
 
 @ContextConfiguration(classes = WebAppConfig.class, initializers = XMLRepositoryTest.PropertyMockingApplicationContextInitializer.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,8 +30,11 @@ public class XMLRepositoryTest {
   @Resource
   private LikeRepository<Like> likeRepository;
 
+  @Resource
+  private StoryRepository<Story> storyRepository;
+
   @Test
-  public void testSaveAnLoadLike() throws Exception {
+  public void testSaveAndLoadLike() throws Exception {
     Like like = new Like();
     like.setAccountName(ACCOUNT_NAME);
     like.setIsLike(false);
@@ -38,6 +42,19 @@ public class XMLRepositoryTest {
     likeRepository.saveOrUpdate(like);
     like = likeRepository.find(ACCOUNT_NAME, URI_WITHOUT_SPECIAL_CHARS);
     Assert.assertNotNull(like);
+  }
+
+  @Test
+  public void testSaveAndLoadStoryWithCountIncremented() throws Exception {
+    Story story = new Story();
+    story.setCount(0);
+    story.setUriWithoutSpecialChars(URI_WITHOUT_SPECIAL_CHARS);
+    Integer countIncremented = story.getCount() + 1;
+    story.setCount(countIncremented);
+    storyRepository.saveOrUpdate(story);
+    story = storyRepository.find(URI_WITHOUT_SPECIAL_CHARS);
+    Assert.assertNotNull(story);
+    Assert.assertEquals(countIncremented, story.getCount());
   }
 
   /**
