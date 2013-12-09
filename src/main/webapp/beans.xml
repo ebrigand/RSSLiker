@@ -1,0 +1,37 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:int="http://www.springframework.org/schema/integration" xmlns:int-feed="http://www.springframework.org/schema/integration/feed"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/integration 
+        http://www.springframework.org/schema/integration/spring-integration-2.2.xsd         
+        http://www.springframework.org/schema/integration/feed 
+        http://www.springframework.org/schema/integration/feed/spring-integration-feed-2.2.xsd"
+>
+
+  <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+    <property name="targetClasses">
+      <list>
+        <value>com.mrm.rss.xml.model.Repo</value>
+        <value>com.mrm.rss.xml.model.Like</value>
+        <value>com.mrm.rss.xml.model.Like</value>
+        <value>com.mrm.rss.xml.model.Story</value>
+      </list>
+    </property>
+  </bean>
+
+  <!--   Create the feed channel  -->
+  <int:channel id="feedChannel" />
+
+  <!--   feed inbound channel adapter  -->
+  <int-feed:inbound-channel-adapter id="feedAdapter" channel="feedChannel" url="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss.xml">
+    <int:poller fixed-rate="300000" max-messages-per-poll="100" />
+  </int-feed:inbound-channel-adapter>
+
+  <!--   Initialize the service  -->
+  <int:service-activator input-channel="feedChannel" ref="feedMessageHandler" />
+
+  <!-- Managing duplicate feed entries (already published or not) in the case of restart of the application context -->
+  <bean id="metadataStore" class="org.springframework.integration.store.PropertiesPersistingMetadataStore" />
+
+</beans>
