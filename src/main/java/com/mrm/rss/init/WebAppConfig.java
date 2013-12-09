@@ -32,7 +32,7 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.mrm.rss")
-@ImportResource("beans.xml")
+@ImportResource("config.xml")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
   @Resource
