@@ -36,7 +36,7 @@ public class LikeRepositoryImpl implements LikeRepository<Like> {
       LikeList likeList = repo.getLikeMap().get(entity.getAccountName());
       boolean isExistsAndUpdated = false;
       for (int i = 0; i < likeList.getLikes().size(); i++) {
-        if (likeList.getLikes().get(i).equals(entity.getUriWithoutSpecialChars())) {
+        if (likeList.getLikes().get(i).equals(entity)) {
           likeList.getLikes().set(i, entity);
           isExistsAndUpdated = true;
           break;
