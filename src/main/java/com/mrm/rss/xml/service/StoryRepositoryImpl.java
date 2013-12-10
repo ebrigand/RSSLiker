@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.mrm.rss.xml.model.Repo;
 import com.mrm.rss.xml.model.Story;
@@ -16,7 +16,7 @@ import com.mrm.rss.xml.repository.XMLRepoManager;
  * @author mamos
  * 
  */
-@Service("storyRepository")
+@Repository("storyRepository")
 public class StoryRepositoryImpl implements StoryRepository<Story> {
 
   @Resource
@@ -35,7 +35,7 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
     for (int i = 0; i < repo.getStories().size(); i++) {
       Story story = repo.getStories().get(i);
       if (story.equals(entity)) {
-        repo.getStories().add(i, entity);
+        repo.getStories().set(i, entity);
         break;
       }
     }

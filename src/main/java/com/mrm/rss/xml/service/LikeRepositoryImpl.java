@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.mrm.rss.xml.model.Like;
 import com.mrm.rss.xml.model.LikeList;
@@ -17,7 +17,7 @@ import com.mrm.rss.xml.repository.XMLRepoManager;
  * @author ebrigand
  * 
  */
-@Service("likeRepository")
+@Repository("likeRepository")
 public class LikeRepositoryImpl implements LikeRepository<Like> {
 
   @Resource
