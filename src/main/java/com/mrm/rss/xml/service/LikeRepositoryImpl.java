@@ -1,6 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -96,6 +97,21 @@ public class LikeRepositoryImpl implements LikeRepository<Like> {
           return likeList.getLikes().get(i);
         }
       }
+    }
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.mrm.rss.xml.service.LikeRepository#getAllByAccountName(java.lang
+   * .String)
+   */
+  @Override
+  public List<Like> getAllByAccountName(String accountName) throws IOException {
+    Repo repo = xmlRepoManager.openRepo();
+    if (repo.getLikeMap().containsKey(accountName)) {
+      return repo.getLikeMap().get(accountName).getLikes();
     }
     return null;
   }

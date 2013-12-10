@@ -1,6 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.mrm.rss.xml.model.Story;
 
@@ -22,5 +23,13 @@ public interface StoryRepository<E extends Story> extends XmlBaseRepository<E> {
    * @throws IOException
    */
   Story find(String uriWithoutSpecialChars) throws IOException;;
+
+  /**
+   * Return a list of Story, null if list is empty
+   * 
+   * @return
+   * @throws IOException
+   */
+  List<Story> getAll() throws IOException;
 
 }

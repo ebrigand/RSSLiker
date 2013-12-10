@@ -1,6 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.mrm.rss.xml.model.Like;
 
@@ -24,5 +25,14 @@ public interface LikeRepository<E extends Like> extends XmlBaseRepository<E> {
    * @throws IOException
    */
   Like find(String accountName, String uriWithoutSpecialChars) throws IOException;
+
+  /**
+   * Return a list of Like, null if list is empty
+   * 
+   * @param accountName
+   * @return
+   * @throws IOException
+   */
+  List<Like> getAllByAccountName(String accountName) throws IOException;
 
 }

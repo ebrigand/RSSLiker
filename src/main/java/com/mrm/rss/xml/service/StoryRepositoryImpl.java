@@ -1,6 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -36,6 +37,7 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
       Story story = repo.getStories().get(i);
       if (story.equals(entity)) {
         repo.getStories().set(i, entity);
+        isStoryExist = true;
         break;
       }
     }
@@ -88,6 +90,20 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
       if (story.getUriWithoutSpecialChars().equals(uriWithoutSpecialChars)) {
         return story;
       }
+    }
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.mrm.rss.xml.service.StoryRepository#getAll()
+   */
+  @Override
+  public List<Story> getAll() throws IOException {
+    Repo repo = xmlRepoManager.openRepo();
+    if (!repo.getStories().isEmpty()) {
+      return repo.getStories();
     }
     return null;
   }
