@@ -15,6 +15,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   
   <script type="text/javascript">   
+    $(document).ready(function() {
       //for all the form (each rss story is a 'like' form)
   	  var val = $( "form[id*='likeForm']" );
       //event on submit button    
