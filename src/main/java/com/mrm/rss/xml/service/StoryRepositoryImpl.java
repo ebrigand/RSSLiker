@@ -85,7 +85,7 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
     Repo repo = xmlRepoManager.openRepo();
     for (int i = 0; i < repo.getStories().size(); i++) {
       Story story = repo.getStories().get(i);
-      if (story.getUriWithoutSpecialChars().equals(uriWithoutSpecialChars)) {
+      if (story.getUriWithoutSpecialChars().equals(story)) {
         return story;
       }
     }
