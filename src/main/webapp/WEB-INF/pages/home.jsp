@@ -11,11 +11,47 @@
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>RSS Liker</title>
-  <!-- <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/> -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  
   <script type="text/javascript">   
     $(document).ready(function() {
+
+      function getLikeCountsAsync() {  		   
+  		   $.ajax({
+			 url : "/rss/getLikeCounts.json",
+			 cache: false,
+             type: "GET",
+             beforeSend: function(xhr) {
+                 xhr.setRequestHeader("Accept", "application/json");
+                 xhr.setRequestHeader("Content-Type", "application/json");
+             },
+		     success : function(stories) {
+		       //for each story, compare the like count from the xml file and the like count of the current web page 
+ 		       for (var i = 0; i<stories.length; i++) {	
+		    	   var aform = "form[id='likeForm" +  stories[i].uriWithoutSpecialChars + "']";
+		    	   //Prevent if the story exists in DB and not in the page, if the case happens, nothing is done
+		    	   if($(aform).prop('likeCount') != undefined){		    		   
+        	    	   if($(aform).prop('likeCount').value != stories[i].count){  
+        	    	      $(aform).prop('likeCount').value = stories[i].count;
+        	    	   }
+        	    	   //Change the value of the input text value with id 'likeCount', update with the new value
+                       if(stories[i].count == 0){
+                    	  $(aform).prop('likeStr').value = "like"; 
+                       } else {
+                    	  $(aform).prop('likeStr').value = "likes"; 
+                       }
+		    	   }
+ 		       }
+         	 },
+             complete : getLikeCountsAsync,
+        	 error : function(xhr) {
+               if (xhr.statusText != "abort" && xhr.status != 503) {
+                   console.error("Unable to retrieve the story list");
+               }
+	         }
+  	     }); 
+  	  }
+      getLikeCountsAsync();
+    
       //for all the form (each rss story is a 'like' form)
   	  var val = $( "form[id*='likeForm']" );
       //event on submit button    
@@ -26,10 +62,7 @@
       	var isLikeElt = $(this).prop('isLike');
       	//Change the like value (inverse the value)
       	var isNewLikeValue = (isLikeElt.value == "true") ? false : true;
-      	var likeCountElt = $(this).prop('likeCount');
-      	var likeStrElt = $(this).prop('likeStr');
-          //Create the JSON of HomeBeanView
-      	var json = { "likeCount" : likeCountElt.value, like : {"accountName" : accountNameValue, "uriWithoutSpecialChars" : uriWithoutSpecialCharsValue, "isLike": isNewLikeValue }};
+      	var json = {"accountName" : accountNameValue, "uriWithoutSpecialChars" : uriWithoutSpecialCharsValue, "isLike": isNewLikeValue };
           $.ajax({
             url: $(val).attr("action"),
             data: JSON.stringify(json),
@@ -38,21 +71,19 @@
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
-            success: function(homeBeanView) {
+            success: function(like) {
           	  //Change the value of the submit button (if the button was 'Like' it becomes 'UnLike' and the opposite)
-              if(homeBeanView.like.isLike){
+              if(like.isLike){
                 buttonElt.value = "UnLike";
               } else {
                 buttonElt.value = "Like"; 
               }
           	  //Change the value of the input hidden value with id 'isLike', update with the new value (coming from the ajax response)
-              isLikeElt.value = homeBeanView.like.isLike;
-              //Change the value of the input text value with id 'likeCount', update with the new value (coming from the ajax response)
-          	  likeCountElt.value = homeBeanView.likeCount;
-          	  if(likeCountElt.value == 0){
-          		likeStrElt.value = "like"; 
-          	  } else {
-          		likeStrElt.value = "likes"; 
+              isLikeElt.value = like.isLike;
+            },
+            error : function(xhr) {
+              if (xhr.statusText != "abort" && xhr.status != 503) {
+                  console.error("Unable to retrieve the like");
               }
             }
         });

@@ -33,6 +33,8 @@ public class Initializer implements WebApplicationInitializer {
     registerHiddenHttpMethodFilter(servletContext);
 
     Dynamic servlet = servletContext.addServlet(DISPATCHER_SERVLET_NAME, new DispatcherServlet(ctx));
+    // Add async support for DefferedObject
+    servlet.setAsyncSupported(true);
     servlet.addMapping("/");
     servlet.setLoadOnStartup(1);
 
@@ -41,6 +43,7 @@ public class Initializer implements WebApplicationInitializer {
   private void registerHiddenHttpMethodFilter(ServletContext servletContext) {
     FilterRegistration.Dynamic fr = servletContext.addFilter("hiddenHttpMethodFilter", HiddenHttpMethodFilter.class);
     fr.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD), false, DISPATCHER_SERVLET_NAME);
+    // Add async support for DefferedObject
+    fr.setAsyncSupported(true);
   }
-
 }

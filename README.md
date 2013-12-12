@@ -35,6 +35,8 @@ The account representation is just done with a String attribute passed to the ho
 A like is defined by an account and a syndEntry
 
 A total count of like is defined by all the likes (of all account) for a same syndEntry
+A Long Polling technique, with DeferredResult (with Spring 3.2) is used for the total count of like.
+So if a second user like a story, the first one will have the new value of the like count without refresh the page.
 
 To access at the home page: (ebrigand is an example for an accountName)
 http://localhost:8080/rss/home?accountName=ebrigand
@@ -46,11 +48,5 @@ Technologies used:
 - Spring integration and Spring integration feed
 - Spring OXM
 - JQuery front-end (with JSON AJAX requests)
+- Long Polling (DeferredResult)
 - API ROME
-
-=========================================================================================================================================================
-
-Improvement
-
-A long polling or a similar technique could be used for the like counter.
-So if a second user like a story, the first one will have the new value of the counter without refresh the page.

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
@@ -34,6 +35,7 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
  */
 @Configuration
 @EnableWebMvc
+@EnableScheduling
 @ImportResource("classpath*:config.xml")
 @ComponentScan("com.mrm.rss")
 @PropertySource("classpath:rssliker.properties")

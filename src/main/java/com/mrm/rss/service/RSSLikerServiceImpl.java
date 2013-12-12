@@ -1,6 +1,7 @@
 package com.mrm.rss.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -97,6 +98,15 @@ public class RSSLikerServiceImpl implements RSSLikerService {
       return storyRepository.find(uriWithoutSpecialChars);
     } catch (IOException e) {
       throw new RSSLikerServiceException("error when reading the like " + uriWithoutSpecialChars + " in the repository file", e);
+    }
+  }
+
+  @Override
+  public List<Story> getAllStory() throws RSSLikerServiceException {
+    try {
+      return storyRepository.getAll();
+    } catch (IOException e) {
+      throw new RSSLikerServiceException("error when reading all the stories", e);
     }
   }
 }

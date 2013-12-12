@@ -14,7 +14,7 @@
       <list>
         <value>com.mrm.rss.xml.model.Repo</value>
         <value>com.mrm.rss.xml.model.Like</value>
-        <value>com.mrm.rss.xml.model.Like</value>
+        <value>com.mrm.rss.xml.model.LikeList</value>
         <value>com.mrm.rss.xml.model.Story</value>
       </list>
     </property>

@@ -1,6 +1,7 @@
 package com.mrm.rss.controller;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mrm.rss.exception.RSSLikerServiceException;
 import com.mrm.rss.feedreader.FeedChannelInterceptor;
 import com.mrm.rss.service.RSSLikerService;
+import com.mrm.rss.service.async.DeferredResultContainer;
 import com.mrm.rss.utils.URIUtil;
 import com.mrm.rss.viewbean.HomeBeanView;
 import com.mrm.rss.xml.model.Like;
+import com.mrm.rss.xml.model.Story;
 import com.sun.syndication.feed.synd.SyndEntry;
 
 /**
@@ -45,6 +49,42 @@ public class HomeController {
 
   @Resource
   private FeedChannelInterceptor feedChannelInterceptor;
+
+  @Resource
+  private DeferredResultContainer deferredResultContainer;
+
+  /**
+   * Called every 1000ms by the home page (see
+   * LikeCountsUpdateScheduler.process) to maintain the updated like counts. A
+   * list of updated count for each story is store in a DeferredResult object,
+   * the object is created when the method is called and destroyed after
+   * consumption
+   * 
+   * @return
+   * @throws RSSLikerServiceException
+   */
+  @RequestMapping(value = "/getLikeCounts", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseBody
+  public DeferredResult<List<Story>> getLikeCounts() throws RSSLikerServiceException {
+    final DeferredResult<List<Story>> deferredResult = new DeferredResult<List<Story>>(null, Collections.emptyList());
+
+    deferredResultContainer.register(deferredResult);
+    deferredResult.onTimeout(new Runnable() {
+      @Override
+      public void run() {
+        deferredResultContainer.remove(deferredResult);
+
+      }
+    });
+    deferredResult.onCompletion(new Runnable() {
+      @Override
+      public void run() {
+        deferredResultContainer.remove(deferredResult);
+
+      }
+    });
+    return deferredResult;
+  }
 
   /**
    * Return the home page
@@ -77,13 +117,10 @@ public class HomeController {
   @ResponseStatus(HttpStatus.CREATED)
   @RequestMapping(value = "/saveOrUpdate/{uriWithoutSpecialChars}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public HomeBeanView likeAction(@PathVariable String uriWithoutSpecialChars, @RequestBody HomeBeanView homeBeanViewFromView) throws RSSLikerServiceException {
-    log.debug("Saving like with uri: " + homeBeanViewFromView.getLike().getUriWithoutSpecialChars());
-    Like like = rssLikerService.like(homeBeanViewFromView.getLike(), homeBeanViewFromView.getLike().getIsLike());
-    HomeBeanView newHomeBeanView = new HomeBeanView();
-    newHomeBeanView.setLike(like);
-    newHomeBeanView.setLikeCount(homeBeanViewFromView.getLike().getIsLike() ? homeBeanViewFromView.getLikeCount() + 1 : homeBeanViewFromView.getLikeCount() - 1);
-    return newHomeBeanView;
+  public Like likeAction(@PathVariable String uriWithoutSpecialChars, @RequestBody Like like) throws RSSLikerServiceException {
+    log.debug("Saving like with uri: " + like.getUriWithoutSpecialChars());
+    like = rssLikerService.like(like, like.getIsLike());
+    return like;
   }
 
   /**

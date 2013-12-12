@@ -10,11 +10,14 @@
       <param name="ConversionPattern" value="%-5p: %c - %m%n" />
     </layout>
   </appender>
-<!--   <category name="org.springframework.data.document.mongodb"> -->
-<!--     <priority value="DEBUG" /> -->
+<!--   <category name="org.exolab.castor.xml"> -->
+<!--     <priority value="INFO" /> -->
+<!--   </category> -->
+<!--   <category name="org.castor.core.util"> -->
+<!--     <priority value="INFO" /> -->
 <!--   </category> -->
   <root>
-    <priority value="DEBUG" />
+    <priority value="INFO" />
     <appender-ref ref="console" />
   </root>
 

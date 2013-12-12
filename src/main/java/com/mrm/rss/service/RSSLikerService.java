@@ -1,5 +1,7 @@
 package com.mrm.rss.service;
 
+import java.util.List;
+
 import com.mrm.rss.exception.RSSLikerServiceException;
 import com.mrm.rss.xml.model.Like;
 import com.mrm.rss.xml.model.Story;
@@ -58,5 +60,12 @@ public interface RSSLikerService {
    * @throws RSSLikerServiceException
    */
   public int computeLikeCount(String uriWithoutSpecialChars) throws RSSLikerServiceException;
+
+  /**
+   * Get the all the stories
+   * 
+   * @return a list of all the stories
+   */
+  public List<Story> getAllStory() throws RSSLikerServiceException;
 
 }
