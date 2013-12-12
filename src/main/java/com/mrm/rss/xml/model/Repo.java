@@ -1,9 +1,9 @@
 package com.mrm.rss.xml.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,13 +22,13 @@ public class Repo {
   private final Map<String, LikeList> likeMap = new HashMap<String, LikeList>();
 
   @XmlAttribute
-  private final List<Story> stories = new ArrayList<Story>();
+  private final Set<Story> stories = new HashSet<Story>();
 
   public Map<String, LikeList> getLikeMap() {
     return likeMap;
   }
 
-  public List<Story> getStories() {
+  public Set<Story> getStories() {
     return stories;
   }
 }

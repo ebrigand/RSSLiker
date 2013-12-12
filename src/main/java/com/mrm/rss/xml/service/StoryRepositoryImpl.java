@@ -1,7 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -32,18 +32,10 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
   @Override
   public synchronized void saveOrUpdate(Story entity) throws IOException {
     Repo repo = xmlRepoManager.openRepo();
-    boolean isStoryExist = false;
-    for (int i = 0; i < repo.getStories().size(); i++) {
-      Story story = repo.getStories().get(i);
-      if (story.equals(entity)) {
-        repo.getStories().set(i, entity);
-        isStoryExist = true;
-        break;
-      }
-    }
-    if (!isStoryExist) {
-      repo.getStories().add(entity);
-    }
+    // Remove and add the entity (based on equals so it will update the count
+    // field)
+    repo.getStories().remove(entity);
+    repo.getStories().add(entity);
     xmlRepoManager.saveRepo(repo);
   }
 
@@ -68,13 +60,7 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
    * @throws IOException
    */
   private boolean isEntityExistsInternal(Repo repo, Story entity) throws IOException {
-    for (int i = 0; i < repo.getStories().size(); i++) {
-      Story story = repo.getStories().get(i);
-      if (story.equals(entity)) {
-        return true;
-      }
-    }
-    return false;
+    return repo.getStories().contains(entity);
   }
 
   /*
@@ -85,8 +71,7 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
   @Override
   public Story find(String uriWithoutSpecialChars) throws IOException {
     Repo repo = xmlRepoManager.openRepo();
-    for (int i = 0; i < repo.getStories().size(); i++) {
-      Story story = repo.getStories().get(i);
+    for (Story story : repo.getStories()) {
       if (story.getUriWithoutSpecialChars().equals(uriWithoutSpecialChars)) {
         return story;
       }
@@ -100,7 +85,7 @@ public class StoryRepositoryImpl implements StoryRepository<Story> {
    * @see com.mrm.rss.xml.service.StoryRepository#getAll()
    */
   @Override
-  public List<Story> getAll() throws IOException {
+  public Set<Story> getAll() throws IOException {
     Repo repo = xmlRepoManager.openRepo();
     if (!repo.getStories().isEmpty()) {
       return repo.getStories();

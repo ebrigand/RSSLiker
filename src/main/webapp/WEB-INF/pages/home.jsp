@@ -28,18 +28,15 @@
 		       //for each story, compare the like count from the xml file and the like count of the current web page 
  		       for (var i = 0; i<stories.length; i++) {	
 		    	   var aform = "form[id='likeForm" +  stories[i].uriWithoutSpecialChars + "']";
-		    	   //Prevent if the story exists in DB and not in the page, if the case happens, nothing is done
-		    	   if($(aform).prop('likeCount') != undefined){		    		   
-        	    	   if($(aform).prop('likeCount').value != stories[i].count){  
-        	    	      $(aform).prop('likeCount').value = stories[i].count;
-        	    	   }
-        	    	   //Change the value of the input text value with id 'likeCount', update with the new value
-                       if(stories[i].count == 0){
-                    	  $(aform).prop('likeStr').value = "like"; 
-                       } else {
-                    	  $(aform).prop('likeStr').value = "likes"; 
-                       }
-		    	   }
+      	    	   if($(aform).prop('likeCount').value != stories[i].count){  
+      	    	      $(aform).prop('likeCount').value = stories[i].count;
+      	    	   }
+      	    	   //Change the value of the input text value with id 'likeCount', update with the new value
+                   if(stories[i].count == 0){
+                	  $(aform).prop('likeStr').value = "like"; 
+                   } else {
+                	  $(aform).prop('likeStr').value = "likes"; 
+                   }
  		       }
          	 },
              complete : getLikeCountsAsync,

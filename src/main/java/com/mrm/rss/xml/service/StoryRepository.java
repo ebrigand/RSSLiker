@@ -1,7 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import com.mrm.rss.xml.model.Story;
 
@@ -30,6 +30,6 @@ public interface StoryRepository<E extends Story> extends XmlBaseRepository<E> {
    * @return
    * @throws IOException
    */
-  List<Story> getAll() throws IOException;
+  Set<Story> getAll() throws IOException;
 
 }

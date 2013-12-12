@@ -1,7 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -35,17 +35,10 @@ public class LikeRepositoryImpl implements LikeRepository<Like> {
     Repo repo = xmlRepoManager.openRepo();
     if (repo.getLikeMap().containsKey(entity.getAccountName())) {
       LikeList likeList = repo.getLikeMap().get(entity.getAccountName());
-      boolean isExistsAndUpdated = false;
-      for (int i = 0; i < likeList.getLikes().size(); i++) {
-        if (likeList.getLikes().get(i).equals(entity)) {
-          likeList.getLikes().set(i, entity);
-          isExistsAndUpdated = true;
-          break;
-        }
-      }
-      if (!isExistsAndUpdated) {
-        likeList.getLikes().add(entity);
-      }
+      // Remove and add the entity (based on equals so it will update the isLike
+      // field)
+      likeList.getLikes().remove(entity);
+      likeList.getLikes().add(entity);
     } else {
       LikeList likeList = new LikeList();
       likeList.getLikes().add(entity);
@@ -78,11 +71,7 @@ public class LikeRepositoryImpl implements LikeRepository<Like> {
   private boolean isEntityExistsInternal(Repo repo, Like entity) throws IOException {
     if (repo.getLikeMap().containsKey(entity.getAccountName())) {
       LikeList likeList = repo.getLikeMap().get(entity.getAccountName());
-      for (int i = 0; i < likeList.getLikes().size(); i++) {
-        if (likeList.getLikes().get(i).equals(entity)) {
-          return true;
-        }
-      }
+      return likeList.getLikes().contains(entity);
     }
     return false;
   }
@@ -92,9 +81,9 @@ public class LikeRepositoryImpl implements LikeRepository<Like> {
     Repo repo = xmlRepoManager.openRepo();
     if (repo.getLikeMap().containsKey(accountName)) {
       LikeList likeList = repo.getLikeMap().get(accountName);
-      for (int i = 0; i < likeList.getLikes().size(); i++) {
-        if (likeList.getLikes().get(i).getUriWithoutSpecialChars().equals(uriWithoutSpecialChars)) {
-          return likeList.getLikes().get(i);
+      for (Like like : likeList.getLikes()) {
+        if (like.getUriWithoutSpecialChars().equals(uriWithoutSpecialChars)) {
+          return like;
         }
       }
     }
@@ -108,7 +97,7 @@ public class LikeRepositoryImpl implements LikeRepository<Like> {
    * .String)
    */
   @Override
-  public List<Like> getAllByAccountName(String accountName) throws IOException {
+  public Set<Like> getAllByAccountName(String accountName) throws IOException {
     Repo repo = xmlRepoManager.openRepo();
     if (repo.getLikeMap().containsKey(accountName)) {
       return repo.getLikeMap().get(accountName).getLikes();

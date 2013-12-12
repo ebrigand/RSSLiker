@@ -1,7 +1,7 @@
 package com.mrm.rss.xml.service;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import com.mrm.rss.xml.model.Like;
 
@@ -33,6 +33,6 @@ public interface LikeRepository<E extends Like> extends XmlBaseRepository<E> {
    * @return
    * @throws IOException
    */
-  List<Like> getAllByAccountName(String accountName) throws IOException;
+  Set<Like> getAllByAccountName(String accountName) throws IOException;
 
 }

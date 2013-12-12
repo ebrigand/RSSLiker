@@ -1,7 +1,7 @@
 package com.mrm.rss.service;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -102,7 +102,7 @@ public class RSSLikerServiceImpl implements RSSLikerService {
   }
 
   @Override
-  public List<Story> getAllStory() throws RSSLikerServiceException {
+  public Set<Story> getAllStory() throws RSSLikerServiceException {
     try {
       return storyRepository.getAll();
     } catch (IOException e) {
