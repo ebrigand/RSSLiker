@@ -18,25 +18,28 @@ Store this data as an XML file on your site.
 =========================================================================================================================================================
 Project Details:
 
-The RSS url of the BBC is defined in the config.xml file.
+The RSS URL of the BBC is defined in the config.xml file.
 
-Sometimes the server having trouble accessing the RSS url (if for example the BBC server hosting the url doesn't reply),
+Sometimes the server having trouble accessing the RSS URL (if for example the BBC server hosting the URL doesn't reply),
  so no feeds are display in the home page, try it again later...
 
 How it works:
-The web app load the RSS url after the start of the application. Spring integration (look the config.xml) helps to read and parse the RSS url, 
-each element is parsed and saved into SyndEntry object (ROME API), and a check and retrieve happens if some new elements of the RSS url are published. 
+The web app load the RSS URL after the start of the application. Spring integration (look the config.xml) helps to read and parse the RSS URL, 
+each element is parsed and saved into SyndEntry object (ROME API), and a check and retrieve happens if some new elements of the RSS URL are published. 
 The time between each checking and retrieving is defined with the "fixed-rate" property
 
-An interceptor is defined, it helps to store each syndEntry element read of the RSS url in a static list of syndEntry element. 
+An interceptor is defined, it helps to store each SyndEntry element read of the RSS URL in a static list of SyndEntry element. 
 
-The account representation is just done with a String attribute passed to the home url (accountName)
+The account representation is just done with a String attribute passed to the home URL (accountName)
 
-A like is defined by an account and a syndEntry
+A like is defined by an account and a SyndEntry
 
-A total count of like is defined by all the likes (of all account) for a same syndEntry
+A total count of like is defined by all the likes (of all account) for a same SyndEntry.
 A Long Polling technique, with DeferredResult (with Spring 3.2) is used for the total count of like.
 So if a second user like a story, the first one will have the new value of the like count without refresh the page.
+
+When a user like/unlike a story, a service is called to save the data in a XML file. Instead to store the SyndEntry instances (with a lot of informations), 
+the URI (simplified, without special chars) of the instances is used.
 
 To access at the home page: (ebrigand is an example for an accountName)
 http://localhost:8080/rss/home?accountName=ebrigand
