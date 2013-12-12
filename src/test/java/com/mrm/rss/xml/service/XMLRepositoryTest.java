@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.mrm.rss.init.WebAppConfig;
-import com.mrm.rss.properties.RssLikerProperties;
+import com.mrm.rss.properties.RSSLikerProperties;
 import com.mrm.rss.xml.model.Like;
 import com.mrm.rss.xml.model.Story;
 
@@ -33,8 +33,8 @@ public class XMLRepositoryTest {
 
   public static final String URI_WITHOUT_SPECIAL_CHARS = "sdfsdfds5464";
 
-  @Resource
-  public RssLikerProperties rssLikerProperties;
+  @Resource(name = "rssLikerProperties")
+  public RSSLikerProperties rssLikerProperties;
 
   @Before
   public void createTestRepoFile() throws IOException {

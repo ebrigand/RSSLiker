@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.mrm.rss.properties.RssLikerProperties;
+import com.mrm.rss.properties.RSSLikerProperties;
 import com.mrm.rss.xml.model.Repo;
 
 /**
@@ -20,8 +20,8 @@ import com.mrm.rss.xml.model.Repo;
 @Service
 public class XMLRepoManager {
 
-  @Resource
-  private RssLikerProperties rssLikerProperties;
+  @Resource(name = "rssLikerProperties")
+  private RSSLikerProperties rssLikerProperties;
 
   @Resource(name = "xmlRepoConverter")
   private XMLRepoConverter xmlConverter;
