@@ -15,6 +15,7 @@ public class RSSLikerServiceException extends Exception {
 
   public RSSLikerServiceException(String error, Exception exception) {
     super(exception);
+    this.error = error;
   }
 
   public String getError() {
