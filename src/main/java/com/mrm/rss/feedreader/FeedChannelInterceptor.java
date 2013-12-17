@@ -21,7 +21,7 @@ import com.sun.syndication.feed.synd.SyndEntry;
 @Component
 public class FeedChannelInterceptor extends ChannelInterceptorAdapter {
 
-  private final static Set<SyndEntry> entries = new LinkedHashSet<SyndEntry>();
+  private final Set<SyndEntry> entries = new LinkedHashSet<SyndEntry>();
 
   @Override
   @SuppressWarnings("unchecked")
