@@ -1,6 +1,6 @@
 RSSLiker
 =========================================================================================================================================================
-Exercise:
+Needs:
 
 We’d like you to create a one-page web site that allows users to view a list of stories from the BBC news site, and to vote on their favourite stories.
 You can use the RSS feed for the BBC site from this URL: http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss.xml
@@ -46,7 +46,9 @@ http://localhost:8080/rss/home?accountName=ebrigand
 
 The like action and like count are saved in a xml file (the file name is defined in a properties file)
 
+=========================================================================================================================================================
 Technologies used:
+
 - Spring MVC with RESTful JSON based services
 - Spring integration and Spring integration feed
 - Spring OXM
