@@ -38,7 +38,7 @@ A total count of like is defined by all the likes (of all account) for a same Sy
 A Long Polling technique, with DeferredResult (with Spring 3.2) is used for the total count of like.
 So if a second user like a story, the first one will have the new value of the like count without refresh the page.
 
-When a user like/unlike a story, a service is called to save the data in a XML file. Instead to store the SyndEntry instances (with a lot of informations), 
+When a user like/unlike a story, a service is called to save the data in a XML file. Instead to store the SyndEntry instances as XML data (with a lot of informations), 
 the URI (simplified, without special chars) of the instances is used.
 
 To access at the home page: (ebrigand is an example for an accountName)
