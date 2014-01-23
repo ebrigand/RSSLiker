@@ -2,6 +2,7 @@ package com.mrm.rss.service.async;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -64,7 +65,8 @@ public class LikeCountsUpdateScheduler {
   private List<Story> getMatchingStoriesWithCurrentReadStories(Set<Story> repoStories, Set<SyndEntry> syndEntries) throws RSSLikerServiceException {
     List<Story> matchingStories = new ArrayList<Story>();
     for (Story story : repoStories) {
-      for (SyndEntry syndEntry : syndEntries) {
+      for (Iterator<SyndEntry> it = syndEntries.iterator(); it.hasNext();) {
+        SyndEntry syndEntry = it.next();
         if (story.getUriWithoutSpecialChars().equals(URIUtil.getUriWithoutSpecialChars(syndEntry.getUri()))) {
           matchingStories.add(story);
           break;
