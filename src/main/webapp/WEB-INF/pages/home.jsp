@@ -112,7 +112,7 @@
                     <input type="hidden" id="uriWithoutSpecialChars" name="uriWithoutSpecialChars" type="text" value="${homeBeanView.like.uriWithoutSpecialChars}"/>
                     <input type="hidden" id="isLike" name="isLike" type="text" value="${homeBeanView.like.isLike}"/>
                     <input id="likeButton" style="width: 80px" type="submit" value="${homeBeanView.like.isLike ? 'UnLike' : 'Like'}" />
-                    <img src="../resources/img/spacer.gif" alt=" " width="20" height="1" /><input type="text" style="border: none; width: 10px" readonly="readonly" id="likeCount" value="${homeBeanView.likeCount}" /> <input type="text" style="border: none; width: 30px" readonly="readonly" id="likeStr" value="${homeBeanView.likeCount == 0 ? 'like' : 'likes'}" />
+                    <img src="../../resources/img/spacer.gif" alt=" " width="20" height="1" /><input type="text" style="border: none; width: 10px" readonly="readonly" id="likeCount" value="${homeBeanView.likeCount}" /> <input type="text" style="border: none; width: 30px" readonly="readonly" id="likeStr" value="${homeBeanView.likeCount == 0 ? 'like' : 'likes'}" />
                 </form>
               </td>
             </tr>
